@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Badge, Button } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api'
 
@@ -31,6 +31,16 @@ const [tasks, setTasks] = useState<ITask[]>([])
     
     const response = await api.get('/tasks')
     setTasks(response.data)
+  }
+
+  async function finishedTask(id: number) {
+    await api.patch(`/tasks/${id}`)
+    loadTasks()
+  }
+
+  async function deleteTask(id: number) {
+    await api.delete(`/tasks/${id}`)
+    loadTasks()
   }
 
   function formatDate(date: Date){
@@ -84,10 +94,10 @@ const [tasks, setTasks] = useState<ITask[]>([])
                       </Badge>
                       </td>
                     <td className='tdbig'>
-                      <button data-type="button" className='colorEdit' onClick={ () => editTask(task.id) }>Edit</button> 
-                      <button data-type="button" className='colorSuccess'>Finally</button>
+                      <button data-type="button" disabled={task.finished} className='colorEdit' onClick={ () => editTask(task.id) }>Edit</button> 
+                      <button data-type="button" disabled={task.finished} className='colorSuccess' onClick={ () => finishedTask(task.id)}>Finally</button>
                       <button data-type="button" className='colorVisualize' onClick={ () => viewTask(task.id)}>Visualize</button> 
-                      <button data-type="button" className='colorRemove'>Remove</button>
+                      <button data-type="button" className='colorRemove' onClick={ () => deleteTask(task.id)}>Remove</button>
                     </td>
                  </tr>  
                 ))

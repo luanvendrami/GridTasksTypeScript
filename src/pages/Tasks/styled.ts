@@ -21,6 +21,11 @@ export const Container = styled.div`
             filter: brightness(0.9);
             cursor: pointer;
         }
+
+        &:disabled{
+             opacity: 0.35;
+            pointer-events: none;
+}
         
  } 
 
@@ -68,4 +73,6 @@ height: 3rem;
     flex-direction: row;
     justify-content: space-between;
 }
+
+
 `

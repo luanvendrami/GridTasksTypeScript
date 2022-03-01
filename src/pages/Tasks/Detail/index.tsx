@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Textareabody, Textareatitle }  from './styled'
 import { useNavigate, useParams } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
+
+import moment from 'moment'
 import api from '../../../services/api';
 
 interface ITask{
@@ -32,6 +35,10 @@ const Detail: React.FC = () => {
     setTask(response.data)
   }
 
+  function formatDate(date: Date | undefined){
+    return moment(date).format("DD/MM/YYYY")
+  }
+
   return(
     <Container>
     <div className="container">
@@ -43,6 +50,22 @@ const Detail: React.FC = () => {
         <br/>
         <Textareatitle value={ task?.title } disabled={true} />
         <Textareabody value={ task?.description } disabled={true}/>
+        <Badge
+          bg={ task?.finished ? "success" : "warning"}>
+          { task?.finished ? "Finished" : "Pending"}
+        </Badge>
+        <br/>
+        <strong>Data de Cadastro: </strong>
+        <Badge
+          data-variant="info">
+            { formatDate(task?.created_at) }
+        </Badge>
+        <br/>
+        <strong>Data de atualização: </strong>
+        <Badge
+          data-variant="info">
+            { formatDate(task?.updated_at) }
+        </Badge>
        </div>
        </Container>
   );
